@@ -15,3 +15,5 @@ Books of JavaScript notes
 | ECMAScript 6 | 2016-11-20 | Proxy&Reflect |
 | ECMAScript 6 | 2016-11-21 | Set&Map |
 | ECMAScript 6 | 2016-11-22 | Symbol |
+| Web安全 | 2016-11-22 | 同源策略 |
+| Web安全 | 2016-11-22 | XSS攻击 |
