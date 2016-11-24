@@ -17,3 +17,4 @@ Books of JavaScript notes
 | ECMAScript 6 | 2016-11-22 | Symbol |
 | Web安全 | 2016-11-22 | 同源策略 |
 | Web安全 | 2016-11-22 | XSS攻击 |
+| ECMAScript 6 | 2016-11-24 | Decorator |
