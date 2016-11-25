@@ -20,3 +20,4 @@ Books of JavaScript notes
 | ECMAScript 6 | 2016-11-22 | Async |
 | ECMAScript 6 | 2016-11-24 | Decorator |
 | ECMAScript 6 | 2016-11-24 | Module |
+| Web安全 | 2016-11-24 | XSS构造技巧 |
