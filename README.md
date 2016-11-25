@@ -19,3 +19,4 @@ Books of JavaScript notes
 | Web安全 | 2016-11-22 | XSS攻击 |
 | ECMAScript 6 | 2016-11-22 | Async |
 | ECMAScript 6 | 2016-11-24 | Decorator |
+| ECMAScript 6 | 2016-11-24 | Module |
