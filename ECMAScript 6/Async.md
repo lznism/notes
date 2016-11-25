@@ -103,3 +103,57 @@ function* gen(){
 run(gen);
 ```
 上面的`run`函数就是一个Generator函数的自动执行器。内部的next()函数就是Thunk的回调函数
+
+### co模块
+```js
+var co = require('co');
+var gen = function* (){
+    var f1 = yield readFile('fileA');
+    var f2 = yield readFile('fileB');
+    console.log(f1.toString());
+    console.log(f2.toString());
+}
+co(gen).then(() => console.log('Generator 函数执行完成'));
+```
+`co`支持并发的异步操作，即允许某些操作同时进行，等到它们全部完成才进行下一步
+```js
+co(function* (){
+    var res = [Promise.resolve(1), Promise.resolve(2)];
+    console.log(res);
+}).catch(onerror);
+```
+
+### async函数
+```js
+var asyncReadFile = async function(){
+    var f1 = await readFile('fileA');
+    var f2 = await readFile('fileB');
+    console.log(f1.toString());
+    console.log(f2.toString());
+}
+```
+async函数的优点：
+- 自带执行器
+- 更好的语义
+- 更广的易用性
+- 返回值是`Promise`
+
+### async语法
+1. async函数返回一个Promise对象
+async函数内部return语句返回的值，会成为then方法回调函数的参数
+```js
+async function f(){
+    return 'hello world';
+}
+f().then(v => console.log(v));
+```
+async函数内部抛出错误，会导致返回的promise对象变为`reject`状态，抛出的错误对象会被catch方法回调函数接收到
+```js
+async function f(){
+    throw new Error('出错了');
+}
+f().then(
+    v => console.log(v),
+    e => console.log(e)
+)
+```
