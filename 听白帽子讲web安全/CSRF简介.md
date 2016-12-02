@@ -11,3 +11,41 @@ CSRF的全名是`Cross Site Request Forgery`，跨站点请求伪造
 ### P3P头的副作用
 尽管有些CSRF攻击实施起来不需要认证，不需要发送Cookie，但是不可否认的是，大部分敏感或重要的操作是躲藏在认证之后的。因此浏览器拦截第三方Cookie发送，在某种程度上来说降低了CSRF攻击威力
 如果网站返回给浏览器的HTTP头中包含P3P头，则某种程度上说，将允许浏览器发送第三方Cookie
+在浏览网站的过程中，若是一个网站设置了Session Cookie，那么在浏览器进程的声明周期内，即使浏览器重新打开了Tab页，Session Cookie也是有效的。Session Cookie保存在浏览器进程的内存空间中；而Third-party Cookie则保存在本地
+
+假设有www.a.com和www.b.com两个域，在b页面上有一个iframe指向www.a.com
+```html
+<iframe src="http://www.a.com/test.php"></iframe>
+```
+
+### Get/Post
+使用HTML的`<img> <iframe> <script>`等等带有src属性的标签，这类标签只能够发起一次GET请求，而不是POST请求，而对于很多网站应用来说，一些重要的操作并未严格区分GET与POST，攻击者可以使用GET请求表单提交的气质
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
