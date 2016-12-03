@@ -22,3 +22,5 @@ Books of JavaScript notes
 | ECMAScript 6 | 2016-11-24 | Module |
 | Web安全 | 2016-11-24 | XSS构造技巧 |
 | Web安全 | 2016-12-01 | XSS防御 |
+| JavaScript高级程序设计 | 2016-12-02 | HTML5脚本编程 |
+| JavaScript高级程序设计 | 2016-12-03 | 错误处理与调试 |
