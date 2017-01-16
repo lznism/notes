@@ -79,3 +79,95 @@ var formerFirstChild = someNode.removeChild(someNode.firstChild);
 - 浅复制 复制节点本身
 
 处理文档树中的文本节点`normalize()`
+
+document对象还有一些特殊的集合，为访问文档常用的部分提供了快捷方式
+`document.anchors` 包含文档中带有name特性的a标签
+`document.applets` 包含文档中所有的`<applet>`元素
+`document.forms` 包含文档中所有的`<form>`元素
+`document.images` 包含文档中所有的`<img>`元素
+`document.links` 包含文档中所有带有`href`的`<a>`元素
+
+DOM一致性检测
+`document.implementation` 检测浏览器实现了DOM的哪些部分
+`document.implementation.hasFeature()` 检测某个功能是否存在
+
+```js
+var hasXmlDom = document.implementation.hasFeature('XML', 1.0);
+```
+
+#### Element类型
+- nodeType的值为1
+- nodeName的值为元素的标签名
+- nodeValue的值为null
+
+```js
+var div = document.getElementById('div');
+alert(div.tagName); // "DIV"
+```
+
+注意上面返回的值是大写
+
+#### 取得属性
+`getAttribute()`, `setAttribute()`, `removeAttribute()`
+取得属性时，如果对应的属性不存在会返回null
+`getAttribute()`方法也可以取得自定义属性值
+
+```html
+<div my_special_attr="hello"></div>
+```
+
+#### 设置属性
+通过`setAttribute()`方法设置的特姓名会被统一转化为小写形式
+
+```js
+div.setAttribute('id', 'div1');
+```
+
+#### attributes属性
+- getNamedItem(name) 返回nodeName属性等于name的节点
+- removeNamedItem(name) 从列表中移除nodeName属性等于name的节点
+- setNamedItem(node) 向列表中移除nodeName属性等于name的节点
+- item(pos) 返回位于数字pos位置处的节点
+
+```js
+var id = element.attributes.getNamedItem('id').nodeValue;
+```
+
+#### 创建元素
+`document.createElement()`
+
+#### 元素的子节点
+这些子节点可能是元素节点，文本节点，注释或处理指令
+
+```html
+<ul id="mylist">
+    <li>item</li>
+    <li>item</li>
+    <li>item</li>
+</ul>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
