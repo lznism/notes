@@ -254,6 +254,16 @@ class MyClass {
 ### new.target属性
 ES6中`new.target`属性返回`new`命令作用于的那个构造函数。如果构造函数不是通过`new`命令调用的，`new.target`就会返回`undefined`,因此这个属性可以用来确定构造函数是怎么调用的
 
+```js
+class Point {
+    constructor(x, y) {
+        console.log(new.target === Point); // true
+        this.x = x;
+        this.y = y;
+    }
+}
+```
+
 
 
 

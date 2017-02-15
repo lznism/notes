@@ -452,6 +452,16 @@ res.location('/foo/bar');
 
 ### res.render()
 渲染一个视图，然后将渲染得到的HTML文档发送给客户端
+`res.render(file, option)`是express中专门渲染视图用的，首先需要在`app.js`或者`index.js`中设置一些渲染引擎，比如`html, jade, ...`, 然后将视图模板未见放入`file`，将需要传递的数据导入`option`对象中，模板引擎就能渲染出自己的视图
+
+```js
+app.set('view engine', 'jade');
+app.set('views', path.join(__dirname, 'views'));
+
+app.get('/', function(req, res, next){
+    res.render('home'); // 渲染views文件夹下面的home.jade文件
+})
+```
 
 ### res.send()
 发送HTTP响应，`body`参数是可以Buffer对象，一个字符串，一个对象，或者一个数组
