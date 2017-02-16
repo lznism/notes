@@ -66,9 +66,88 @@ React生命周期可以分为两类
     + componentDidMount
     + componentWillUnmount
 - 当组件接收到新的数据时
+    + componentWillReceiveProps
+    + shouldComponentUpdate
+    + componentWillUpdate
+    + componentDidUpdate
+    + render
 
+`shouldComponentUpdate`是性能优化的主要方式之一
 
+无状态组件总是会重新渲染，使用`Recompose`库的`pure`方法
 
+```js
+const OptimizedComponent = pure(ExpensiveComponent);
+```
+
+pure方法做的事情就是将无状态组件转化为`class`语法加上`PureRender`后的组件
+
+使用`ES6`开发React主要的两点不同就是`static propTypes`, `static defaultProps`
+
+`ReactDOM`中的API非常少，只有`findDOMNode`, `unmountComponentAtNode`, `render`
+
+#### findeDOMNode
+当组件被渲染到真实的DOM中时，`findDOMNode`返回该React组件实例相对应的DOM节点
+
+#### render
+`render`方法将组件挂载到`container`中，并且返回`element`实例。如果是无状态组件，返回的就是`null`
+当React组件渲染完成需要更新时，会使用`DOM diff`算法做局部更新，这是React最大的亮点之一
+
+如果将`refs`放到原生的DOM组件上，我们通过`refs`获得的就是DOM节点
+如果将`refs`放到React组件上，我们获得的就是组件的实例，就可以调用组件上的实例方法
+
+对于DOM操作，我们不仅可以使用`findDOMNode`获得组件DOM，还可以使用`refs`获得组件内部的DOM
+
+```jsx
+class App extends Component {
+    componentDidMount() {
+        const myComp = this.refs.myComp;
+        const dom = findDOMNode(myComp);
+    }
+    render() {
+        return <div><Comp ref='myComp'></div>;
+    }
+}
+```
+
+无论是`findDOMNode`还是`refs`都无法用于无状态组件中，原因是无状态组件挂载时只是方法调用，没有新建实例
+
+并不推荐在React中使用React.findDOMNode来操作DOM.因为这在大部分情况下都打破了封装性，而且通常都能用更清晰的方法在React中构建代码
+
+React基于`virtual DOM`实现了一个`SynthicEvent(合成事件层)`
+
+在React底层，主要做了两件事情:`事件委派`, `自动绑定`
+#### 事件委派
+React并不会将事件绑定到真实的节点上，而是把时间绑定到结构的最外层，做一个统一的事件监听器，这个事件监听器维持了一个映射来保存所有的组件内部的事件监听和处理函数
+
+#### 自动绑定
+在React中每个方法的上下文都会自动指向该组件的实例，即自动绑定`this`到当前组件，但是在`ES6 classes`或者纯函数时，这种自动绑定就不复存在了，我们需要手动绑定this
+
+方法一 `bind`
+方法二 `stage-0`草案中的`::`
+
+```jsx
+<button onClick={::this.handleClick}>button</button>
+```
+
+方法三 `构造函数内声明`
+
+```js
+constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+}
+```
+
+方法四 `箭头函数`
+
+```jsx
+handleClick = () => {
+    // ...code
+}
+// 或者
+<button onClick={() => this.handleClick()}>button</button>
+```
 
 
 
