@@ -141,6 +141,7 @@ async函数的优点：
 ### async语法
 1. async函数返回一个Promise对象
 async函数内部return语句返回的值，会成为then方法回调函数的参数
+
 ```js
 async function f(){
     return 'hello world';
@@ -148,6 +149,7 @@ async function f(){
 f().then(v => console.log(v));
 ```
 async函数内部抛出错误，会导致返回的promise对象变为`reject`状态，抛出的错误对象会被catch方法回调函数接收到
+
 ```js
 async function f(){
     throw new Error('出错了');
@@ -157,3 +159,91 @@ f().then(
     e => console.log(e)
 )
 ```
+
+`async`函数返回的Promise对象必须等到内部所有的`awiat`命令后面的`Promise对象`执行完毕，才会执行`then`方法的回调函数
+
+```jsx
+async function getTitle(url) {
+    let response = await fetch(url);
+    let html = await respose.text();
+    return html.match(/<title>([\s\S]+)</title>/);
+}
+getTitle('https://tc39.github.io/ecma262/').then(console.log)
+```
+
+正常情况下，`await`命令后面是一个`promise`对象。如果不是，会转成一个立即`resolve`的Promise对象
+
+```js
+async function f() {
+    return await 123;
+}
+f().then(x => console.log(x));
+```
+
+`await`命令参数的数值是123，它被转成Promise对象，并立即`resolve`
+
+只要`async`中有一个函数被`reject`,那么整个async函数就会中断执行
+
+```js
+async function f() {
+    await Promise.reject('err');
+    await Promise.resolve('hello world'); // 不会执行
+}
+```
+
+防止出错的方法，我们可以将其放在`try...catch`代码块中 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
