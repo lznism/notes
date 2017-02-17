@@ -149,7 +149,24 @@ handleClick = () => {
 <button onClick={() => this.handleClick()}>button</button>
 ```
 
+#### React中使用原生事件
+原生事件必须在`componentDidMount`事件之后使用
 
+```jsx
+class NativeEventDemo extends Component {
+    componentDidMount() {
+        this.ref.button.addEventListener('click', e=> {}, false);
+    }
+}
+```
+
+#### 不要将合成事件和原生事件混用
+阻止原生事件传播仅仅需要使用`e.preventDefault()`
+
+#### React受控组件
+1. 可以通过初始的`state`中设置表单的默认值
+2. 每当表单的值变化时，调用`onChange`事件处理器
+3. 
 
 
 
