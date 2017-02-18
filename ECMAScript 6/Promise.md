@@ -98,4 +98,46 @@ p.then(val => cnosole.log('fulfilled', val))
 p.then(val => console.log('fulfilled', val))
     .then(null, err => console.log('rejected', err));
 ```
+一般来说，不要将`rejected`状态的回调函数写到`then`的第二个参数，总是写到`catch`中才是最佳实践
+```js
+p.then((value) => console.log(value))
+    .catch(err => console.log(err));
+```
+catch方法中还能继续抛出错误，继续被后面的`catch`捕获
+
+### Promise.all([])
+该方法用于接受多个Promise实例，包装成一个新的Promise实例
+具体用法
+- 当一个Promise实例被reject时，整个状态会变为reject
+- 当所有的Promise实例resolve时，整个状态才会变为resolve
+
+```js
+var p = Promise.all([p1, p2, p3]);
+```
+
+### Promise.race([])
+该方法用于接受多个Promise实例，包装成一个新的Promise实例
+具体用法
+那个Promise实例的状态先发生改变，那整个实例的状态就会发生改变
+
+```js
+var p = Promise.race([]);
+```
+
+### Promise.resolve()
+有时需要将现有的对象转化为Promise对象，`Promise.resolve`方法就起到这个作用
+
+```js
+// 将jQuey的defferred对象转化为Promise对象
+var jsPromise = Promise.resolve($.ajax('/aaa.json'));
+```
+
+如果参数不具有`then`方法或者根本就不是对象，那么状态会被`resolved`
+
+```js
+var p = Promise.resolve('hello'); // 状态变为resolve，且传递的参数是hello
+```
+
+### Promise.reject()
+立即返回一个状态是`reject`的Promise对象
 
