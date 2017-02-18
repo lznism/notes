@@ -80,3 +80,22 @@ p2.then(result => console.log(result))
 
 ### Promise.prototype.then()
 Promise实例具有then方法，也就是说，`then`方法是定义在原型对象`Promise.prototype`上的。它的作用是为Promise实例添加状态改变时的回调函数。
+```js
+var promise = new Promise((resolve,reject) => {});
+promise.then((json) => json.post)
+    .then(post => {...});
+```
+`promise`实例的`then`方法返回值会作为下一个`then`方法的参数
+
+### Promise.prototype.catch
+`catch`方法用于当promise的状态变为`reject`是发生的回调函数，另外如果`then`中发生了错误，`catch`也会捕获这个错误
+如果promise的状态已经`resolve`那么在这个resolve后面抛出的错误将不再被`catch`捕获
+以下代码等价
+```js
+p.then(val => cnosole.log('fulfilled', val))
+    .then(null, err=> console.log('rejected', err));
+
+p.then(val => console.log('fulfilled', val))
+    .then(null, err => console.log('rejected', err));
+```
+
