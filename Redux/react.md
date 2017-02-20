@@ -166,7 +166,101 @@ class NativeEventDemo extends Component {
 #### React受控组件
 1. 可以通过初始的`state`中设置表单的默认值
 2. 每当表单的值变化时，调用`onChange`事件处理器
-3. 
+3. 事件处理器通过合成事件对象e拿到改变后的状态，并更新`state`
+4. 使用setState来更新状态
+
+#### React非受控组件
+如果一个表单没有`value`和`props`，就可以成为非受控组件
+可以通过`defaultValue`和`defaultChecked`来表示组件的默认状态
+
+不提倡在React中使用非受控组件，这样会使数据流向混乱，不易于数据状态管理
+
+React中写入的内联样式，像素值的结尾不要加`px`
+
+```js
+const style = {
+    width: 100,
+    height: 100,
+    backgroundColor: 'red'
+}
+```
+
+#### classnames库的用法
+用来动态操作classnames
+
+```js
+const btnClass = ClassNames({
+    'btn': true,
+    'btn-pressed': this.state.isPressed,
+    'btn-over': !this.state.isPressed && this.state.isHovered
+})
+```
+
+CSS模块化解决的问题`css样式的导入和导出`
+
+`CSS Modules`需要在`webpack.config.js`的`css-loader`后加上查询字段`?modules&localIdentName=[name]-[local]-[hash:base64:5]`
+其中`modules`是按照模块化来解析css,`localIdentName`是指`className`的命名规则
+
+CSS Modules实现了以下几个问题
+- 所有的样式都是局部化的
+- class命名规则可以使用webpack来灵活配置
+- 只需要引用组件的JavaScript
+
+样式默认为局部样式。以下两种写法等价
+
+```css
+.title {
+    color: red;
+}
+:local(.title){
+    color: red;
+};
+```
+
+全局样式，如果使用的是全局样式，组件中的className用字符串即可
+
+```css
+/*定义全局样式*/
+:global(.title) {
+    color: red;
+}
+```
+
+```jsx
+//直接使用字符串即可
+const App = () => <h1 className="title">Hello World</h1>;
+```
+
+CSS Modules 使用技巧
+- 不使用选择器来定义样式
+- 不层叠多个class，只使用一个class来将所有的样式定义好
+- 所有的样式通过`composes`组合来实现复用
+
+外部样式覆盖局部样式
+
+```jsx
+return <div className={style.root} data-role="dialog-root"></div>
+
+// css
+[data-role="dialog-root"] {
+    // override css
+}
+```
+
+可以将classnames库和CSS Module联系起来使用
+
+```js
+render() {
+    const cx = classNames({
+        confirm: !this.state.disabled,
+        disabledConfirm: this.state.disabled
+    });
+    return <div className={styles.root}>
+        <a className={styles[cx]}></a>
+    </div>;
+}
+```
+
 
 
 
