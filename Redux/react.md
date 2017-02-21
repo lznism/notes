@@ -261,9 +261,65 @@ render() {
 }
 ```
 
+### 组件通信
+1. 父组件向子组件通信
+父组件通过`props`向子组件传递需要的信息
 
+2. 子组件向父组件通信
+主要的方法有两种
+- 利用回调函数
+- 利用自定义事件机制
 
+```js
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.changeItem = this.changeItem.bind(this);
+        this.state = {
+            list: ['item1', 'item2'],
+            curItem: 'item1'
+        }
+    }
+    changeItem(item) {
+        this.setState({
+            curItem: item
+        });
+    }
+    render() {
+        return <div>
+            the currentItem is : {this.state.curItem}
+            <List list={this.state.list} changeItem={this.changeItem} />
+        </div>
+    }
+}
 
+class List extends Component {
+    onClickItem = (item) => {
+        this.props.changeItem(item);
+    }
+    render = () => <ul>
+        {
+            this.props.list.map((item, index) => (
+                <li key={`list-${index}`} onClick={this.onClickItem.bind(this, item)}>i ma {item}, click me</li>
+            ))
+        }
+    </ul>
+}
+```
+
+还可以使用`context`来进行父子组件之间的传值，但是这个并不推荐使用
+`context`就是全局变量，而全局变量正是导致应用混乱的原因
+
+没有嵌套关系的组件，可以使用事件机制进行通讯
+
+```js
+componentDidMount() {
+    this.itemChange = emitter.addListener('ItemChange', (msg, data) => console.log(data));
+}
+componentWillUnmount() {
+    emitter.removeListener(this.itemChange);
+}
+```
 
 
 
