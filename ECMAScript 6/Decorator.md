@@ -1,5 +1,6 @@
 ### 类的修饰
 修饰器是一个函数，用来改变类的行为。修饰器对类的行为的改变，是代码编译时发生的，而不是在运行时发生。这意味着修饰器能在编译阶段运行代码
+
 ```js
 // 修饰器的第一个参数就是所要修饰的目标类
 function testable(target){
@@ -10,15 +11,37 @@ function testable(target){
 class MyTestableClass {}
 console.log(MyTestableClass.isTestable); // true
 ```
-上面的代码中，@testable就是一个修饰器。它修改了`MyTestableClass`这个类的行为
-如果一个参数不够用，可以在修饰器外面再封装一层函数
+
+上面的代码中，@testable就是一个修饰器。它修改了`MyTestableClass`这个类的行为,也就是说修饰器的第一个参数就是所要修饰的目标类
+
+基本上修饰器的行为就像下面这样
+
+```js
+@decorator
+class A {}
+
+// 相当于
+class A {}
+A = decoration(A) || A;
+```
+
+如果一个参数不够用，可以在修饰器外面再封装一层函数,修饰器`testable`可以接受参数，这就等于可以修改修饰器的行为
+
 ```js
 function testable(isTestable){
     return function(target){
         target.isTestable = isTestable;
     }
 }
+@testable(true)
+class MyTestableClass {}
+MyTestableClass.isTestable // true;
+
+@testable(false);
+class MyTestableClass {}
+MyTestableClass.isTestable // false;
 ```
+
 上面的例子给类添加了一个静态属性，如果想添加实例属性，可以通过目标类的`prototype`
 
 ### 给类添加一个静态属性
@@ -30,6 +53,29 @@ function testable(target){
 class A {}
 let a = new A();
 a.isTestable; // true
+```
+
+### mixin
+
+```js
+// mixins.js
+export function mixins(...list) {
+    return function(target) {
+        Object.assin(target.prototype, ...list);
+    }
+}
+// main.js
+import {mixins} from './mixins';
+const Foo = {
+    foo(){
+        console.log('foo');
+    }
+};
+
+@mixins(Foo)
+class MyClass {}
+let obj = new MyClass();
+obj.foo();
 ```
 
 ### 方法的修饰
