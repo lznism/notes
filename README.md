@@ -1,2 +1,1 @@
-### notes
-Books of JavaScript notes
+前端学习读书笔记，欢迎star，共同进步
