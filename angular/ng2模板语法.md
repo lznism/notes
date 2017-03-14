@@ -1,0 +1,203 @@
+### 插值表达式
+这个跟ng1中的`{{}}`很像，大括号内部可以防止任意有效的`js表达式`，将js表达式的结果求值之后再将结果输出出来
+
+```html
+<p>the sum of 1 + 1 is {{1 + 1}}</p>
+```
+
+插值表达式中可以调用宿主组件中的方法
+
+```html
+<p>the sum of 1 + 1 is {{getValue()}}</p>
+```
+
+### 模板表达式
+模板表达式产生一个值。`Angular`执行这个表达式，并把它赋值给绑定目标的属性，这个绑定目标可能是`HTML元素，组件，指令`。类似于`[property] = "express"`
+
+模板表达式不能引用全局命名空间中任何东西。不能引用`window`和`document`，不能调用`console.log`或`Math.max`。他们只能访问来自表达式上下文中的成员
+
+```js
+// isUnChanged 就是引用的上下文中的isUnChanged属性
+[disabled] = "isUnChanged";
+```
+
+表达式需要遵循以下准则
+- 没有可见的副作用 除了目标属性的属性值意外，不改变应用的任何状态
+- 执行迅速 不应该包含大量的计算
+- 非常简单 
+- 幂等性 返回的东西完全相同，知道某个依赖发生变化
+
+### 模板语句
+类似于`(event)="onSave()"`
+`onSave()`就是数据绑定组件实例中的方法，事件中事件对象是通过`$event`来传递的
+
+### 绑定语法
+根据数据流的方向可以将绑定分为三类
+- 单向，从数据源到视图目标
+    + {{expression}}
+    + [target] = 'expression'
+    + bind-target = 'expression'
+
+- 单向，从视图到数据源
+    + (target) = 'statement'
+    + on-target = 'statement'
+
+- 双向
+    + [(target)] = 'expression'
+    + bindon-target = 'expression'
+
+模板绑定是通过`DOM property`和事件来工作的，而不是`attribute`
+
+### 绑定目标
+数据绑定目标是DOM中的某些东西。这个目标可能是`元素|组件|指令 property`,也可能是`元素|组件|指定 事件`
+
+- property
+
+```html
+    <!-- 属性绑定 将属性设置为组件属性的值，例如下面img的src属性 -->
+    <img [src] = 'heroImageUrl' />
+    <!-- 设置自定义组件的模型属性，这个是父子组件通讯的重要途径 -->
+    <hero-detail [hero] = 'currentHero'></hero-detail>
+    <div [ngClass] = '{selected: isSelected}'></div>
+```
+
+- event
+
+```html
+<button (click) = 'onSave()'>Save</button>
+<hero-detail (deleteRequest) = 'deleteHero()'></hero-detail>
+<!-- myClick是一个指定事件 -->
+<div (myClick) = 'clicked = $event'>click me</div>
+```
+
+- 双向
+
+```html
+<input type="text" [(ngModel)] = 'heroName' />
+```
+
+- attribute
+
+```html
+<button [attr.arial-label] = 'help'>help</button>
+```
+
+- css 
+
+```html
+<!-- 给类名加上class前缀 -->
+<!-- 给DIV添加一个special的类(在isSpecial为true的情况下) -->
+<div [class.specail] = 'isSpecial'>special</div>
+```
+
+- style
+
+```html
+<!-- 给样式名加上style的前缀 -->
+<button [style.color] = "isSpecial ? 'red' : 'green'">button</button>
+<!-- 可以通过下列方法来设置字体大小的单位 -->
+<button [style.font-size.em] = 'isSpecial ? 3 : 1'>button</button>
+```
+
+### 一次性字符串初始化
+当下列条件满足时，应该省略中括号
+- 目标属性接受字符串值
+- 字符串是个固定值
+- 这个值永远不可改变
+
+当没有元素属性可以绑定时，就必须使用到`attribute`，没有对应的属性可以绑定
+
+```html
+<tr><td colspan="{{1 + 1}}">Three-Four</td></tr>
+```
+
+上面的这段表达式就会报错，因为`td`元素没有`colspan`属性。但是插值表达式和属性表达式只能设置属性，不能设置`attribute`
+
+这时我们可以采取以下做法，加上`attr`前缀
+
+```html
+<tr><td [attr.colspan] = '1+1'>One-Two</td></tr>
+```
+
+### $event和事件处理语句
+
+```js
+<input [value] = 'currentHero.firstname' (input) = 'currentHero.firstname = $event.target.value'/>
+```
+
+### 使用EventEmitter实现自定义事件
+指令创建一个`EventEmitter`实例，并且把它作为属性暴露出来。指定调用`EventEmitter.emit(payload)`来触发事件
+
+### 使用NgModel进行双向数据绑定
+
+```html
+<input type="text" [(ngModel)] = 'currentHero.name'>
+```
+
+在使用`ngModel`做数据绑定时，得先导入`FormsModule`
+
+### 内置指定
+
+1. ngClass
+
+```js
+@Component({
+    selector: 'app-root',
+    template: `
+        <div [ngClass] = 'currentClasses'>This div is initially saveable, unchanged, and special</div>
+    `
+})
+class Test {
+    currentClasses: {};
+    setCurrentClasses() {
+        this.currentClasses = {
+            savable: this.canSave,
+            modified: !this.isUnChanged,
+            special: this.isSpecial
+        };
+    }
+}
+```
+
+2. ngStyle
+
+```js
+@Component({
+    selector: 'app-root',
+    template: `
+        <div [ngStyle] = 'currentStyle'>This div is initially saveable, unchanged, and special</div>
+    `
+})
+class Test {
+    currentStyles: {};
+    setCurrentStyles() {
+        this.currentStyles = {
+        // CSS styles: set per current state of component properties
+        'font-style':  this.canSave      ? 'italic' : 'normal',
+        'font-weight': !this.isUnchanged ? 'bold'   : 'normal',
+        'font-size':   this.isSpecial    ? '24px'   : '12px'
+    };
+}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
