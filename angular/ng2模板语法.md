@@ -182,8 +182,48 @@ class Test {
 ```
 
 
+3. ngIf
+如果`*ngIf`表达式中的值为`false`，那么会从DOM中移除元素子树
 
+```html
+<div *ngIf="currentHero">Hello, {{currentHero.firstname}}</div>
+```
 
+`ngIf`和`[class.hidden]`是不同的, `[class.hidden]`和`[class.display]`并不会将其从DOM树中移除
+
+```html
+<div [class.hidden] = 'isSpecial'>show with class</div>
+```
+
+4. 当需要从一组可能的元素树中根据条件显示一个
+
+```html
+<span [ngSwitch]='toeChoice'>
+    <span *ngSwitchCase = "'Eenie'">Eenie</span>
+    <span *ngSwitchCase = "'Meanie'">Meanie</span>
+    <span *ngSwitchCase = "'Miney'">Miney</span>
+    <span *ngSwitchDefault>other</span>
+</span>
+```
+
+5. ngFor
+
+```html
+<span *ngFor="let hero of heroes">{{heroes.fullname}}</span>
+```
+
+带索引的ngFor
+
+```
+<div *ngFor="let hero of heroes; let i=index;">{{i+1}} - {{hero.fullname}}</div>
+```
+
+创建模板引用变量
+
+```html
+<input type="text" #box>
+<button (click)="callPhone(box.value)">button</button>
+```
 
 
 
