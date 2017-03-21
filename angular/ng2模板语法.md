@@ -47,6 +47,7 @@
     + bindon-target = 'expression'
 
 模板绑定是通过`DOM property`和事件来工作的，而不是`attribute`
+在angular的世界里，attribute唯一的作用就是用来初始化元素和指令的状态。当进行数据绑定时，只是在与元素和指令的property和事件打交道，而attribute就完全靠边站了
 
 ### 绑定目标
 数据绑定目标是DOM中的某些东西。这个目标可能是`元素|组件|指令 property`,也可能是`元素|组件|指定 事件`
@@ -225,7 +226,19 @@ class Test {
 <button (click)="callPhone(box.value)">button</button>
 ```
 
+#### NgForTrackBy
+避免无脑渲染所有的DOM,可以构造一个追踪函数，比如有一万个`id`唯一的用户，id相同的是同一个人
+如果从服务器中请求这个列表，请求之后默认的是全部渲染所有的用户，而我们现在不想让那些原有的用户重新渲染，增加性能压力
 
+```html
+<div *ngFor="let user of users; trackBy: trackByHeroes">{{user.name}}</div>
+```
+
+```js
+trackByHeroes(id: number, user: User) {
+    return user.id;
+}
+```
 
 
 
