@@ -58,4 +58,3 @@ const subscription = stream.subscribe(
 	() => console.log(`completed`)
 );
 ```
-
