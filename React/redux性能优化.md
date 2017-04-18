@@ -1,0 +1,3 @@
+### Reselect
+我们要求在reducer中保持简单，不处理数据。我们会在connect的mapStateToProps中把state中的数据进行转换和合并，生成衍生数据通过props提供给组件
+事实上对于Redux来说，每当store发生变化，所有的connect就会重新计算一遍。在一个大型应用中，浪费的重复计算可想而知。为了减少性能浪费，我们可以对connect中的这些计算做缓存

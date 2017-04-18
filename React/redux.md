@@ -1,3 +1,6 @@
+Redux的核心是一个store,这个store由Redux提供的createStore(reducers[, initialState])
+reducers本质上是一个函数，其函数签名是`(previousState, action) => newState`
+
 ### 单一数据源
 整个应用的state被储存在一棵object tree中，并且这个object tree只存在于一个store中
 ``` javascript
@@ -125,8 +128,17 @@ import todoApp from './reducers';
 let store = createStore(todoApp);
 ```
 
-
-
+### React Router
+* **声明式路由**
+React Router很好的继承了React声明式编程的特点，允许开发者使用JSX来书写声明式路由
+```js
+import {Router, Route, browserHistory} from 'react-router;
+const routes = (
+    <Router history={browserHistory}>
+        <Route path="/" component={App} />
+    </Router>
+)
+```
 
 
 
