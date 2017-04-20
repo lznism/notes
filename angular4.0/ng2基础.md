@@ -175,3 +175,29 @@ constructor(private service: HeroService) {}
 <input #box (keyup)="0" />
 <p>{{box.value}}</p>
 ```
+
+### 表单
+`Angular`表单协调一组数据绑定控件，跟踪变更，验证输入的有效性
+ng2提供了非常便捷的`双向数据绑定、变更检查、验证和错误处理`
+表单进行双向数据绑定的核心就是`ngModel`
+
+#### NgForm指令
+Angular会在`<Form>`标签上自动创建并附加上`NgForm`指令
+NgForm指令为form增补了一些额外的特性。他会控制那些带有ngModel和name属性的元素，监听他们的属性
+它还有自己的`valid`属性，这个属性只有在它包含的每个空间都有效时才是真的
+需要注意的是，每个input元素都有name属性，Angular表单用它注册控件
+
+```html
+<form #heroForm="ngForm"></form>
+```
+
+上面的代码中，`heroForm`是一个到NgForm指令的引用，它代表该表单的整体
+
+#### 模板驱动的表单
+利用angular模板，可以构建几乎所有的表单-登录表单联系人表单...
+
+- ng-valid/ng-invalid 控件值得有效性
+- ng-dirty/ng-pristine 控件值是否已经发生变化
+- ng-touched/ng-untouched 控件值是否已经访问过
+
+表单name属性的用途是有效性验证和对表单元素的变更进行追踪

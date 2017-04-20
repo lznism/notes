@@ -131,14 +131,21 @@ export class Logger {
 providers: [Logger];
 ```
 
-其实`provider`是一个拥有两个属性的对象
+其实`provider`是一个拥有两个属性的对象，一下这种写法是provider的更详细的写法
 
 ```js
 [{provider: Logger, useClass: Logger}]
 ```
 
-第一个是令牌，用于定位依赖值和注册`provider`
+第一个是令牌(Key)，用于定位依赖值和注册`provider`
 第二个是provider定义对象。可以将其看作是指导如何创建依赖值的配方
+
+#### 备选的provider
+某些时候我们会请求一个不同的类来提供服务，下面的代码告诉注入器，当有人请求Logger时，返回BetterLogger
+
+```js
+[{provider: Logger, useClass: BetterLogger}]
+```
 
 带有依赖的provider
 假设`BetterLogger`可以在日志消息中显示用户名。这个日志服务从注入`UserService`中取得用户，`UserService`通常也会在应用级注入
