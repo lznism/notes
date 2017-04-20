@@ -123,9 +123,18 @@
 <tr><td [attr.colspan] = '1+1'>One-Two</td></tr>
 ```
 
-### $event和事件处理语句
+通过class来绑定CSS样式类，下面的代码中如果isSpecial的值为真，那就会绑定special这个类
 
-```js
+```html
+<div [class.special]="isSpecial"></div>
+```
+
+同理样式绑定通过`[style.color]`进行绑定
+
+### `$event`和事件处理语句
+绑定会通过`$event`的事件对象传递关于此事件的信息(包括数据值)
+
+```html
 <input [value] = 'currentHero.firstname' (input) = 'currentHero.firstname = $event.target.value'/>
 ```
 
