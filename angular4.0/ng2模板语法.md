@@ -149,6 +149,24 @@
 
 在使用`ngModel`做数据绑定时，得先导入`FormsModule`
 
+```html
+<hero-detail [hero]="currentHero" (deleteRequest)="deleteHero($event)"></hero-detail>
+```
+
+上面的代码中hero是属性绑定的目标，deleteRequest是事件绑定的目标
+在HeroDetailComponent内部，这些属性被装饰器标记成了输入和输出的属性
+
+```js
+@Component({
+    inputs: ['hero'],
+    outputs: ['deleteRequest'],
+})
+export class HeroDetailComponent {
+    @Input() hero: Hero;
+    @Output() deleteRequest = new EventEmitter<Hero>();
+}
+```
+
 ### 内置指定
 
 1. ngClass
@@ -185,12 +203,12 @@ class Test {
     currentStyles: {};
     setCurrentStyles() {
         this.currentStyles = {
-        // CSS styles: set per current state of component properties
-        'font-style':  this.canSave      ? 'italic' : 'normal',
-        'font-weight': !this.isUnchanged ? 'bold'   : 'normal',
-        'font-size':   this.isSpecial    ? '24px'   : '12px'
-    };
-}
+            // CSS styles: set per current state of component properties
+            'font-style':  this.canSave      ? 'italic' : 'normal',
+            'font-weight': !this.isUnchanged ? 'bold'   : 'normal',
+            'font-size':   this.isSpecial    ? '24px'   : '12px'
+        };
+    }
 }
 ```
 
@@ -252,17 +270,9 @@ trackByHeroes(id: number, user: User) {
 }
 ```
 
+#### 安全导航操作符和空属性路径
+下面的代码中如果没有加上`?`cerrentHero的值是undefined,会抛出一个错误，但是如果加上了`?`就不会抛出
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+```html
+the current hero's name is {{currentHero?.name}}
+```
