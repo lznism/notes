@@ -1,0 +1,95 @@
+### 创建一个XHR对象
+支持度 IE7+, FF, Opera, Chrome, safari
+
+```js
+function createXHR() {
+    if(typeof XMLHttpRequest != 'undefined') {
+        return new XMLHttpRequest();
+    } else if(typeof ActiveXObject != 'undefined' ) {
+        if(typeof arguments.callee.activeXString != 'string') {
+            var versions = ['MSXML2.XMLHttp.6.0', "MSXML2.XMLHttp.3.0", "MSXML2.XMLHttp"], i , len;
+            for(i = 0; i <version.length; i<len; i++) {
+                try{
+                    new ActiveXObject(version[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex) {
+
+                }
+            }
+        }
+        return new ActiveXObject(arguments.callee.activeXString);
+    } else {
+        throw new Error('no xhr object aviliable');
+    }
+}
+```
+
+### XHR用法
+xhr.open(METHOD, PATH, ASYNC);
+METHOD: 请求的方法
+PATH:   请求的URL
+ASYNC:  是否异步发送请求； TRUE --- 异步； FALSE --- 同步
+
+`xhr.open()` 并不会真正发送请求
+
+```js
+xhr.open('get', './test.txt', true);
+```
+
+如果要发送出去请求。必须使用`xhr.send()`
+如果没有需要发送的数据，`xhr.send(null)`
+如果有需要发送的数据，可以使用`xhr.send(data)`
+当收到响应之后，响应的数据会自动填充XHR对象的属性
+
+- reponseText 作为主体被返回的文本
+- reponseXML  
+- status      HTTP状态
+- statusText  HTTP状态的说明
+
+### XHR.raedyState
+
+- 0 初始化，尚未调用open()方法
+- 1 启动，已经调用open()方法，但是未调用send()
+- 2 发送，已经调用send
+- 3 接受，已经接到部分响应数据
+- 4 完成，已经接收到全部响应数据
+
+readyState每变化一次都会调用`onReadyStateChange`事件
+
+```js
+xhr.onreadyStateChange = function() {
+    if(xhr.readyState === 4) { // 接收到全部的响应数据
+        if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+            // 正确的请求
+            alert(xhr.responseText);
+        }
+    }
+}
+```
+
+在收到响应之前，取消异步请求`xhr.abort()`
+
+### HTTP请求头
+- Accept
+- Accept-Charset
+- Accept-Encoding
+- Accept-Language
+- Connection
+- Cookie
+- Host
+- Referer
+- User-Agent
+
+设置请求头
+
+```js
+xhr.setHttpRequest('Accept', 'text/html');
+```
+
+### HTTP响应头
+
+```js
+xhr.getResponseHeader('MyHeader');  // 获取特定的头
+xhr.getAllResonseHeaders();         // 获取所有的响应头
+```
