@@ -143,3 +143,38 @@ xhr.ontimeout = function() { // 超时的回调函数
     alert('Request did not return in a second');
 }
 ```
+
+### 进度事件
+- loadstart 在接收到第一个字节时触发
+- progress  在接受响应期间不断触发
+- error     在请求错误时触发
+- abort     终止触发
+- load      在接收完成时触发
+- loadend   error, abort, load事件之后触发
+
+load可以代替`readyState === 4`的情况
+
+```js
+xhr.load = function() {
+    if(xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+        alert(xhr.responseText);
+    } else {
+        alert('undone!');
+    }
+}
+```
+
+`onprogress()`会接受到一个event对象，它有三个额外的属性
+- `lengthComputable` 进度信息是否可用
+- `position`         已经接收到的字节数
+- `totalSize`        根据`Content-Length`来确定预期的字节数
+
+```js
+xhr.onprogress = function(event) {
+    if(event.lengthComputable) {
+        console.log(event.position + 'of' + event.totalSize 'completed');
+    }
+}
+```
+
+**这个方法必须在open方法之前调用**
