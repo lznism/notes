@@ -93,3 +93,53 @@ xhr.setHttpRequest('Accept', 'text/html');
 xhr.getResponseHeader('MyHeader');  // 获取特定的头
 xhr.getAllResonseHeaders();         // 获取所有的响应头
 ```
+
+### GET请求
+特征：查询字符串
+使用GET请求的常见错误，未使用`encodeURIComponent`来对查询字符串进行编码
+
+```js
+function addURLParam(url, name, value) {
+    url += (url.indexOf('?') === -1 ? '?' : '&');
+    url += encodeURIComponent(name) + '=' + encodeURIComponent(value);
+    return url;
+}
+```
+
+### POST请求
+POST请求应该把数据作为请求的主体提交，POST请求的主体可以包含多个数据，并且格式不限制
+
+```js
+// open的用法
+xhr.open('post', url, true);
+// 使用send方法来传递数据
+// 首先需要设置头信息的Content-Type
+xhr.setRequestHeader('Content-Type': 'application/x-www-form-urlencoded');
+// 然后在send中写入需要传递的数据
+xhr.send('a=111&b=222');
+```
+
+### FormData
+FormData为序列化表单的内容提供了遍历
+兼容性问题：目前只能兼容IE11
+
+```js
+// 基本用法
+var data = new FormData();
+data.append('name', 'lznism');
+// 向其中添加表单数据
+var data = new FormData(document.forms[0]);
+xhr.send(data);
+```
+
+### 超时设定
+两个步骤
+1. 给xhr加上timeout属性
+2. 添加ontimeout回调，同时终止请求
+
+```js
+xhr.timeout = 1000; // 将超时设置为1S
+xhr.ontimeout = function() { // 超时的回调函数
+    alert('Request did not return in a second');
+}
+```
