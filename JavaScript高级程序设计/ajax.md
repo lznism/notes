@@ -178,3 +178,52 @@ xhr.onprogress = function(event) {
 ```
 
 **这个方法必须在open方法之前调用**
+
+### Preflight Request
+这种机制允许开发人员使用自定义的请求头，请求方法
+- Origin
+- Access-Control-Request-Method
+- Access-Control-Request-Headers
+
+### 带凭据的请求
+```js
+Access-Control-Allow-Credentials: true
+```
+
+### CORS跨浏览器的兼容性问题
+原理：只需要检验`withCredientials`是否存在于xhr对象中
+
+```js
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    if('withCredientials' in xhr) {
+        xhr.open(method, url ,true);
+    } else if (typeof XDomainRequest != 'undefined') {
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    return xhr;
+}
+```
+
+### img跨域
+缺点： 只能GET, 不能访问服务器端的返回
+```js
+var img = new Image();
+img.onload = img.onerror = function() {
+    alert('Done');
+}
+img.src='http://lznism.com/test?name=lznism';
+```
+
+### JSONP
+```js
+function handleResponse(response) {
+    console.log(response);
+}
+var script = document.createElement('script');
+script.src="http://lznism.com?callback=handleResponse";
+document.body.insertBefore(script, document.body,firstChild);
+```
