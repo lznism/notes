@@ -227,3 +227,9 @@ var script = document.createElement('script');
 script.src="http://lznism.com?callback=handleResponse";
 document.body.insertBefore(script, document.body,firstChild);
 ```
+
+### Comet
+`Comet`是一种服务器向页面推送数据的技术
+两种实现Comet的技术
+- 长轮询 浏览器发起一个请求，然后服务器一直保持请求打开，直到有数据可以发送， 数据发送完毕之后关闭连接
+- 流     页面的整个生命周期中只是用一个HTTP链接。浏览器向服务器发送一个请求，而服务器保持打开，而后周期性的向浏览器发送数据

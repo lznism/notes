@@ -1,13 +1,15 @@
 `<html>`称为文档元素，文档元素是文档的最外层元素，文档中的其他元素都包含在文档元素中
 
-#### Node类型
+## Node类型
 Javascript中所有的节点类型都是继承自`Node`类型，因此所有的节点类型都共享着相同的基本属性和方法
+`IE8-`没有公开Node类型的构造函数
 
 ```js
 // 以下判断节点类型的方法适用于所有的浏览器
 if(someNode.nodeType === 1){
 	alert('this node is a element');
 }
+document.body.nodeValue === undefined; // true 元素节点的nodeValue为undefined
 ```
 
 节点支持的属性
@@ -17,8 +19,10 @@ if(someNode.nodeType === 1){
 节点关系
 每个节点都有一个childNodes属性，其中都保存着一个NodeList对象。NodeList是一种类数组对象，用于保存一组有序的节点，`DOM中的变化能自动反应在NodeList中`
 使用`slice`方法将类数组转化为数组
+**NodeList**是有生命的，有呼吸的对象，并不是第一次访问它的时候拍摄下来的一张快照
 
 ```js
+// IE8-不能使用这个方法
 Array.prototype.slice.call(nodes, 0);
 ```
 
@@ -58,6 +62,7 @@ insertBefore()方法
 
 ```js
 // 插入之后成为最后一个子节点
+// 调用insertBefore方法的应该是元素的父节点
 var returnedNode = someNode.insertBefore(newNode, null);
 alert(newNode == someNode.lastChild); // true
 
@@ -79,6 +84,29 @@ var formerFirstChild = someNode.removeChild(someNode.firstChild);
 - 浅复制 复制节点本身
 
 处理文档树中的文本节点`normalize()`
+
+#### 总结
+节点关系
+- childNodes
+- parentNode
+- previousSibling
+- nextSibling
+- firstChild
+- lastChild
+- hasChildNodes()
+
+操作节点
+- appendChild()
+- insertBefore()
+- removeChild()
+- replaceChild()
+- cloneNode()
+- normalize()
+
+## Document
+#### 文档的子节点
+`document.documentElement`始终指向的是HTML元素
+`childNodes` 这个会包含`doctype`和`html`
 
 document对象还有一些特殊的集合，为访问文档常用的部分提供了快捷方式
 `document.anchors` 包含文档中带有name特性的a标签
@@ -146,28 +174,3 @@ var id = element.attributes.getNamedItem('id').nodeValue;
     <li>item</li>
 </ul>
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
