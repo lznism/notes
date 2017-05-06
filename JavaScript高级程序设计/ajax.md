@@ -200,33 +200,57 @@ xdr.onerror = function() {
 xdr.open('get', 'http://lznism.com');
 xdr.send(null);
 ```
+### Preflight Request
+这种机制允许开发人员使用自定义的请求头，请求方法
+- Origin
+- Access-Control-Request-Method
+- Access-Control-Request-Headers
 
+### 带凭据的请求
+```js
+Access-Control-Allow-Credentials: true
+```
 
+### CORS跨浏览器的兼容性问题
+原理：只需要检验`withCredientials`是否存在于xhr对象中
 
+```js
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    if('withCredientials' in xhr) {
+        xhr.open(method, url ,true);
+    } else if (typeof XDomainRequest != 'undefined') {
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    return xhr;
+}
+```
 
+### img跨域
+缺点： 只能GET, 不能访问服务器端的返回
+```js
+var img = new Image();
+img.onload = img.onerror = function() {
+    alert('Done');
+}
+img.src='http://lznism.com/test?name=lznism';
+```
 
+### JSONP
+```js
+function handleResponse(response) {
+    console.log(response);
+}
+var script = document.createElement('script');
+script.src="http://lznism.com?callback=handleResponse";
+document.body.insertBefore(script, document.body,firstChild);
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Comet
+`Comet`是一种服务器向页面推送数据的技术
+两种实现Comet的技术
+- 长轮询 浏览器发起一个请求，然后服务器一直保持请求打开，直到有数据可以发送， 数据发送完毕之后关闭连接
+- 流     页面的整个生命周期中只是用一个HTTP链接。浏览器向服务器发送一个请求，而服务器保持打开，而后周期性的向浏览器发送数据
