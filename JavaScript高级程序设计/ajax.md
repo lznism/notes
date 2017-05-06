@@ -178,3 +178,55 @@ xhr.onprogress = function(event) {
 ```
 
 **这个方法必须在open方法之前调用**
+
+### 跨域
+CORS(跨域资源共享)，基本的原理就是利用自定义的HTTP头部让浏览器和服务器通讯，从而决定请求是应该成功还是失败
+IE8中引入了`XDR(XDomainRequest)`
+XDR和XHR也有一些不同之处
+- cookie不会随着请求发送，也不会随着响应返回
+- 只能设置请求头信息中的`Content-Type`字段
+- 不能设置响应头信息
+- 只支持GET, POST请求
+- XDR只支持异步请求
+
+```js
+var xdr = new XDomainRequest();
+xdr.onload = function() {
+    alert(xhr.responseText);
+};
+xdr.onerror = function() {
+    alert('error');
+}
+xdr.open('get', 'http://lznism.com');
+xdr.send(null);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
