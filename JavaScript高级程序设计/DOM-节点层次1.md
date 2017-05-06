@@ -109,19 +109,55 @@ var formerFirstChild = someNode.removeChild(someNode.firstChild);
 `childNodes` 这个会包含`doctype`和`html`
 
 document对象还有一些特殊的集合，为访问文档常用的部分提供了快捷方式
+`document.doctype` 文档类型声明，但是在IE8-时，会错误的解释为Comment节点
 `document.anchors` 包含文档中带有name特性的a标签
 `document.applets` 包含文档中所有的`<applet>`元素
 `document.forms` 包含文档中所有的`<form>`元素
 `document.images` 包含文档中所有的`<img>`元素
 `document.links` 包含文档中所有带有`href`的`<a>`元素
 
+`document.domain`的设置也是跨域的一种形式，可以对`document.domain`设置为相同的值，但是这里也会存在一个限制
+举个例子
+在`www.a.com`中设置了一个`blog.a.com`的iframe, 本身这两个之间是无法通讯的
+但是可以将`document.domain`设置为`a.com`这样两者之间就可以正常通信
+
 DOM一致性检测
 `document.implementation` 检测浏览器实现了DOM的哪些部分
 `document.implementation.hasFeature()` 检测某个功能是否存在
 
+##### IE8-对于document.getElementById的不同表现
+`document.getElementById()`
+- 在IE8-下面，不区分ID的大小写
+- IE8- 时这个方法也可以将表单元素查找出来，详情请看下面的例子
+
+```html
+<input name="aaa" />
+<div id="aaa"></div>
+```
+
+对于上面的代码使用`document.getElementById('aaa')`则会返回`input`元素
+
+##### document.getElementByTagName()
+这个返回的是一个动态的集合
+
+#### namedItem()
+返回的是一个元素
+
+#### document.getElementsByName()
+返回的是一个集合
+
+#### DOM一致性检测
+本方法存在漏洞
+返回true的时候也可能没有这些DOM功能，建议在检测某些特殊的DOM功能时候，应该加入能力检测
 ```js
 var hasXmlDom = document.implementation.hasFeature('XML', 1.0);
 ```
+
+#### 文档写入功能
+- write() 
+- wirteln() 在写入的字符串末尾加上一个\n
+- open()
+- close()
 
 #### Element类型
 - nodeType的值为1
