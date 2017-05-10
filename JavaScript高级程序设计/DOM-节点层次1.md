@@ -210,3 +210,54 @@ var id = element.attributes.getNamedItem('id').nodeValue;
     <li>item</li>
 </ul>
 ```
+
+
+```js
+// 在IE8以下只会返回元素节点
+document.getElementById('myList').childNodes.length; // 3
+// 在正常版本的浏览器下，会包含文本节点
+document.getElementById('myList').childNodes.length; // 7
+// 在正常浏览器下，要获取元素节点可以像下面这样做
+document.getElementById('myList').childNodes.forEach(node =>{
+    if(node.nodeType === 1) {
+        // operator...
+    }
+})
+```
+
+#### 动态加载脚本
+
+```js
+function loadScript(url) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src  = url;
+    document.appendChild(script);
+}
+```
+
+#### 动态加载样式
+
+```js
+function loadStyle(url) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    var head = document.getElementsByTagName('head');
+    head.appendChild(link);
+}
+```
+
+#### NodeList
+
+先来看一个死循环
+
+```js
+var divs = document.getElementsByTagName('div');
+for(var i=0; i<divs.length; i++) {
+    var div = document.createElement('div');
+    document.body.appendChild(div);
+}
+```
+
+上面的死循环中`divs`是一个NodeList类型，这个是动态的存储所有的div标签
