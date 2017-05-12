@@ -124,3 +124,41 @@ float的默认值是`none`,可以简单的理解为不浮动
 如图所示
 
 ![float04](http://i4.buimg.com/588926/f03fbfb3b6021c8b.png)
+
+### 浮动元素可以伸到包裹元素的外部
+
+```html
+<style>
+.container {
+  width: 300px;
+  height: 300px;
+  background: #ccc;
+}
+
+.child {
+  width: 100px;
+  height: 100px;
+  background: #eee;
+  float: left;
+  text-align: center;
+  line-height: 100px;
+}
+
+.child1 {
+  height: 400px;
+}
+</style>
+<div class="container">
+	<div class="child child1">child-1</div>
+	<div class="child">child-2</div>
+	<div class="child">child-3</div>
+</div>
+```
+
+如下图所示
+
+![float05](http://i1.piimg.com/588926/a94943ae28dad48a.png)
+
+### 浮动元素和块级、行内元素重叠
+当与行内元素重叠时，浮动元素会比行内元素层级高一级
+当与块级元素重叠是，浮动元素会比块级元素层级低一级
