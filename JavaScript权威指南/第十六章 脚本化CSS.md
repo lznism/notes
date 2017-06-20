@@ -52,3 +52,61 @@ function shake(e, oncomplete, distance, time) {
 ```js
 var style = window.getComputedStyle(dom); // 返回的是一个CSSStyleDeclaration对象
 ```
+
+IE中采用的是`currentStyle`属性
+
+```js
+document.getElementById('test').currentStyle;
+```
+
+### 16.5 脚本化CSS类
+HTML属性的class在JS中应该使用`className`
+
+HTML5为了解决`className`的问题，推出了`classList`属性，该属性是`DOMTokenList`对象
+
+```js
+function classList(e) {
+    if(e.classList) return e.classList;
+    else return new CSSClassList(e);
+}
+function CSSClassList(e) {
+    this.e = e;
+}
+CSSClassList.prototype.contains = function(c) {
+    if(c.length === 0 || c.indexOf('') !== -1) {
+        throw new Error('Invalid class name ' + c);
+    }
+    var classes = this.e.className;
+    if(!classes) return false;
+    return classes.search('\\b'+c+'\\b') != -1;
+}
+CSSClassList.prototype.add = function(c) {
+    if(this.contains(c)) return;
+    var classes = this.e.className;
+    if(classes && classes[classes.length-1] !== '') {
+        c = ' ' + c;
+        this.e.className += c;
+    }
+}
+```
+
+### 16.6 脚本化样式表
+`<style>`, `<link>`元素和`CSSStyleSheet`对象都定义了一个在JS中可以设置和查询的`disabled`属性，如果设置为`true`样式表就会被浏览器关闭并且忽略
+
+```js
+// 接受一个数字或者一个数组
+function disableStylesheet(ss) {
+    if(typeof ss === 'number') {
+        document.styleSheets[ss].disabled = true;
+    } else {
+        var sheets = document.querySelectorAll(ss);
+        for(var i=0; i<sheets.length; i++) {
+            sheets[i].disabled = true;
+        }
+    }
+}
+```
+
+现代的浏览器可以使用标准的DOM技术创建一个`<style>`，然后使用`innerHTML`来创建样式表
+
+IE8以前创建新的样式表要使用`document.createStyleSheet()`
