@@ -1,3 +1,14 @@
+虚拟元素可以理解为真实元素的对应，它的构建和更新在内存中完成，并不会渲染到DOM中
+
+条件注释通常用来判断浏览器的版本，但是由于jsx中需要使用闭合标签，于是我们可以这样来判断浏览器的版本
+
+```js
+{
+	(!!window.ActiveXObject || 'ActiveXObject' in window) ?
+	<p>work in IE brower</p> : ''
+}
+```
+
 #### JSX
 * **boolean属性**
 
@@ -5,6 +16,7 @@
 
 ```html
 <checkbox checked />
+<button disabled>btton</button>
 ```
 
 如果需要指定true或者false，可以像下面这样使用
@@ -34,7 +46,7 @@
 
 React组件的三个组成部分`props, state, 生命周期钩子`
 
-在实际的开发中我们需要将React组件划分到合理的粒度，这样当数据发生变化不至于让整个UI重新渲染，但是究竟要到什么样的粒度，这里`是个坑`
+在实际的开发中我们需要将React组件划分到合理的粒度，这样当数据发生变化不至于让整个UI重新渲染
 
 * **无状态组件**
 
