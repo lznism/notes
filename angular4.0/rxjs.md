@@ -1,6 +1,12 @@
 * **map**
 `map(func)`该函数对原来的流使用函数`func`进行转换，并生成新的流
 
+```js
+var responseStream = requestStream.map(url => {
+	return Rx.Observable.fromPromise($.getJSON(url));
+})
+```
+
 * **buffer**
 
 * **fromEvent**
@@ -21,6 +27,13 @@ stream.filter(x => x > 2);
 * **startWith**
 
 * **flatMap**
+可以将枝干的流的值发射到主流上
+
+```js
+var responseStream = requestStream.flatMap(url => {
+	return Rx.Observable.fromPromise($.getJSON(url));
+});
+```
 
 * **combineLatest**
 通过处理函数总是将指定的可观察对象序列中最新发射的值合并为一个可观察对象
