@@ -99,6 +99,13 @@ var p: Point = {
 p.x = 20;
 ```
 
+只读数组
+```js
+let a: number[] = [1,2,3,4];
+let a1: ReadonlyArray<number> = a;
+a1.push(5); // error
+```
+
 接口描述函数类型
 
 ```js
